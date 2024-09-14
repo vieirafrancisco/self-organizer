@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "flask-template"
+version = "0.1.0"
+description = "Template for flask projects"
+authors = ["Francisco <vieirafrancisco.dev@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+Flask = "^3.0.3"
+pytest = "^8.3.3"
+environs = "^11.0.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.5"
+flask-shell-ipython = "^0.5.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

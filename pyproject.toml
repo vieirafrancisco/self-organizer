@@ -11,6 +11,9 @@ python = "^3.12"
 Flask = "^3.0.3"
 pytest = "^8.3.3"
 environs = "^11.0.0"
+pypdf2 = "^3.0.1"
+google-generativeai = "^0.8.1"
+nltk = "^3.9.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.6.5"

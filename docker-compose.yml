@@ -1,0 +1,25 @@
+version: '3'
+services:
+  app:
+    build: .
+    container_name: flask_app
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:6.0
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: app
+      MONGO_INITDB_ROOT_PASSWORD: app
+
+volumes:
+  mongo-data:
+    driver: local

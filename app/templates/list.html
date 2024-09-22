@@ -1,55 +1,40 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'base.html' %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Index</title>
+{% block title %}
+Lista de Faturas
+{% endblock title %}
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
+{% block content %}
+<form action="{{ url_for('main.create_invoice') }}" method="post" enctype="multipart/form-data">
+  <label for="bank_name">Nome do Banco</label>
+  <input type="text" name="bank_name" id="bank_name">
+  <label for="ref_date">Data referência</label>
+  <input type="date" name="ref_date" id="ref_date">
+  <label for="pdf">Fatura</label>
+  <input type="file" name="pdf" accept="application/pdf" id="pdf">
+  <button type="submit" class="btn btn-primary">Upload</button>
+</form>
 
-<body data-bs-theme="dark">
-  <div class="container mt-4">
-    <form action="{{ url_for('main.create_invoice') }}" method="post" enctype="multipart/form-data">
-      <label for="bank_name">Nome do Banco</label>
-      <input type="text" name="bank_name" id="bank_name">
-      <label for="ref_date">Data referência</label>
-      <input type="date" name="ref_date" id="ref_date">
-      <label for="pdf">Fatura</label>
-      <input type="file" name="pdf" accept="application/pdf" id="pdf">
-      <button type="submit" class="btn btn-primary">Upload</button>
-    </form>
-
-    {% if invoices %}
-    <table class="table">
-      <thead>
-        <th>ID</th>
-        <th>Nome do banco</th>
-        <th>Data referência</th>
-        <th>Ações</th>
-      </thead>
-      <tbody>
-        {% for invoice in invoices %}
-        <tr>
-          <td>{{ invoice.id }}</td>
-          <td>{{ invoice.bank_name }}</td>
-          <td>{{ invoice.ref_date }}</td>
-          <td>
-            <a href="{{ url_for('main.detail_invoice', id=invoice.id) }}" class="btn btn-primary">Detalhe</a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% endif %}
-
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
-</body>
-
-</html>
+{% if invoices %}
+<table class="table">
+  <thead>
+    <th>ID</th>
+    <th>Nome do banco</th>
+    <th>Data referência</th>
+    <th>Ações</th>
+  </thead>
+  <tbody>
+    {% for invoice in invoices %}
+    <tr>
+      <td>{{ invoice.id }}</td>
+      <td>{{ invoice.bank_name }}</td>
+      <td>{{ invoice.ref_date }}</td>
+      <td>
+        <a href="{{ url_for('main.detail_invoice', id=invoice.id) }}" class="btn btn-primary">Detalhe</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock content %}

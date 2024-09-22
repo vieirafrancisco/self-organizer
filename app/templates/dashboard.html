@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock title %}
+
+{% block content %}
+<div class="content">
+  <div class="header">
+    <h4>Dashboard</h4>
+  </div>
+
+  <div class="quick-notes row gap-2 mt-4">
+    <div class="card col">
+      <div class="card-body">
+        <div class="title">
+          <h6>Total Gastos</h6>
+        </div>
+        {{ total_debt }}
+      </div>
+    </div>
+
+    <div class="card col">
+      <div class="card-body">
+        <div class="title">
+          <h6>Quantidade de Dívidas</h6>
+        </div>
+        {{ count_debt }}
+      </div>
+    </div>
+
+    <div class="card col">
+      <div class="card-body">
+        <div class="title">
+          <h6>Valor da Maior Dívida</h6>
+        </div>
+        {{ greater_debt }}
+      </div>
+    </div>
+
+    <div class="card col">
+      <div class="card-body">
+        <div class="title">
+          <h6>Quantos Parcelamentos</h6>
+        </div>
+        {{ installment_debt }}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

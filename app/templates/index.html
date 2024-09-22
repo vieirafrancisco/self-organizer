@@ -23,20 +23,19 @@
         <th>Data</th>
         <th>Descrição</th>
         <th>Valor</th>
+        <th>Parcela Paga</th>
         <th>Parcelas</th>
-        <th>Parcelas Pagas</th>
       </thead>
       <tbody>
         {% for debt in debts %}
         <tr>
           <td>{{ debt.date }}</td>
           <td>{{ debt.description }}</td>
-          <td>{{ debt.amount }}</td>
+          <td>{{ debt.value }}</td>
+          <td>{{ debt.paid_installment }}</td>
           <td>{{ debt.total_installments }}</td>
-          <td>{{ debt.paid_installments }}</td>
         </tr>
         {% endfor %}
-
       </tbody>
     </table>
     {% endif %}

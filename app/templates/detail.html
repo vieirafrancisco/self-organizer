@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Detail
+{% endblock title %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <div class="title">
+      <h4>{{ invoice.id }}</h4>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <th>Data</th>
+          <th>Descrição</th>
+          <th>Valor</th>
+          <th>Parcela Paga</th>
+          <th>Parcelas</th>
+        </thead>
+        <tbody>
+          {% for debt in invoice.debts %}
+          <tr>
+            <td>{{ debt.date }}</td>
+            <td>{{ debt.description }}</td>
+            <td>{{ debt.value }}</td>
+            <td>{{ debt.paid_installment }}</td>
+            <td>{{ debt.total_installments }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock content %}

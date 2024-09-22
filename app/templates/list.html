@@ -12,28 +12,33 @@
 
 <body data-bs-theme="dark">
   <div class="container mt-4">
-    <form action="{{ url_for('main.upload_pdf') }}" method="post" enctype="multipart/form-data">
-      <input type="file" name="pdf" accept="application/pdf">
+    <form action="{{ url_for('main.create_invoice') }}" method="post" enctype="multipart/form-data">
+      <label for="bank_name">Nome do Banco</label>
+      <input type="text" name="bank_name" id="bank_name">
+      <label for="ref_date">Data referência</label>
+      <input type="date" name="ref_date" id="ref_date">
+      <label for="pdf">Fatura</label>
+      <input type="file" name="pdf" accept="application/pdf" id="pdf">
       <button type="submit" class="btn btn-primary">Upload</button>
     </form>
 
-    {% if debts %}
+    {% if invoices %}
     <table class="table">
       <thead>
-        <th>Data</th>
-        <th>Descrição</th>
-        <th>Valor</th>
-        <th>Parcela Paga</th>
-        <th>Parcelas</th>
+        <th>ID</th>
+        <th>Nome do banco</th>
+        <th>Data referência</th>
+        <th>Ações</th>
       </thead>
       <tbody>
-        {% for debt in debts %}
+        {% for invoice in invoices %}
         <tr>
-          <td>{{ debt.date }}</td>
-          <td>{{ debt.description }}</td>
-          <td>{{ debt.value }}</td>
-          <td>{{ debt.paid_installment }}</td>
-          <td>{{ debt.total_installments }}</td>
+          <td>{{ invoice.id }}</td>
+          <td>{{ invoice.bank_name }}</td>
+          <td>{{ invoice.ref_date }}</td>
+          <td>
+            <a href="{{ url_for('main.detail_invoice', id=invoice.id) }}" class="btn btn-primary">Detalhe</a>
+          </td>
         </tr>
         {% endfor %}
       </tbody>

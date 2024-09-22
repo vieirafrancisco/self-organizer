@@ -1,8 +1,11 @@
+from datetime import date
+
 import PyPDF2
 import google.generativeai as genai
 from nltk.tokenize import word_tokenize
 
 from .settings import GOOGLE_API_KEY
+from .models import Debt, Invoice
 
 
 def extract_text_from_pdf(pdf_file):
@@ -50,3 +53,18 @@ def serialize_text(text):
             'total_installments': int(fields[3]),
             'paid_installments': int(fields[4]),
         }
+
+
+def save_invoice_to_db(
+    bank_name: str, ref_date: date, debts: list, file_raw_text: str
+) -> Invoice:
+    def build_debts():
+        for debt in debts:
+            yield Debt(**debt)
+
+    return Invoice(
+        bank_name=bank_name,
+        ref_date=ref_date,
+        debts=list(build_debts()),
+        file_raw_text=file_raw_text,
+    ).save()

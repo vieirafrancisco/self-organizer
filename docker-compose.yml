@@ -16,9 +16,9 @@ services:
       - "27017:27017"
     volumes:
       - ./mongo-data:/data/db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: app
-      MONGO_INITDB_ROOT_PASSWORD: app
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: app
+    #   MONGO_INITDB_ROOT_PASSWORD: app
 
 volumes:
   mongo-data:

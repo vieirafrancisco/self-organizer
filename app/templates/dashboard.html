@@ -4,10 +4,45 @@
 Dashboard
 {% endblock title %}
 
+{% block css %}
+<style>
+  .select2-container--default .select2-selection--multiple {
+    background-color: #212529;
+  }
+
+  .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #2B3035;
+  }
+
+  .select2-results {
+    background-color: #212529;
+  }
+
+  .select2-container--default .select2-results__option--selected {
+    background-color: #198754;
+  }
+
+  .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+    background-color: #198754;
+  }
+</style>
+{% endblock css %}
+
 {% block content %}
 <div class="content">
-  <div class="header">
+  <div class="content-header">
     <h4>Dashboard</h4>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col d-flex flex-column gap-2 p-0">
+      <label>Selecione a(s) fatura(s):</label>
+      <select class="js-example-basic-multiple" name="states[]" multiple="multiple" aria-label="Invoice select">
+        {% for invoice in invoices %}
+        <option value="{{ invoice.id }}" selected>{{ invoice }}</option>
+        {% endfor %}
+      </select>
+    </div>
   </div>
 
   <div class="quick-notes row gap-2 mt-4">
@@ -16,25 +51,55 @@ Dashboard
         <div class="title">
           <h6>Total Gastos</h6>
         </div>
-        {{ total_debt }}
+        <div x-data="{ data: null, loading: true }" x-init="fetch('/data/total_debt')
+               .then(response => response.json())
+               .then(result => data = result)
+               .catch(error => console.error('Erro ao buscar os dados:', error))
+               .finally(() => loading = false)">
+          <div x-show="loading" class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div x-show="!loading" x-text="data.detail">
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="card col">
       <div class="card-body">
         <div class="title">
-          <h6>Quantidade de Dívidas</h6>
+          <h6>Quantidade de Compras</h6>
         </div>
-        {{ count_debt }}
+        <div x-data="{ data: null, loading: true }" x-init="fetch('/data/count_debt')
+               .then(response => response.json())
+               .then(result => data = result)
+               .catch(error => console.error('Erro ao buscar os dados:', error))
+               .finally(() => loading = false)">
+          <div x-show="loading" class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div x-show="!loading" x-text="data.detail">
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="card col">
       <div class="card-body">
         <div class="title">
-          <h6>Valor da Maior Dívida</h6>
+          <h6>Valor da Maior Compra</h6>
         </div>
-        {{ greater_debt }}
+        <div x-data="{ data: null, loading: true }" x-init="fetch('/data/greater_debt')
+               .then(response => response.json())
+               .then(result => data = result)
+               .catch(error => console.error('Erro ao buscar os dados:', error))
+               .finally(() => loading = false)">
+          <div x-show="loading" class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div x-show="!loading" x-text="data.detail">
+          </div>
+        </div>
       </div>
     </div>
 
@@ -43,9 +108,28 @@ Dashboard
         <div class="title">
           <h6>Quantos Parcelamentos</h6>
         </div>
-        {{ installment_debt }}
+        <div x-data="{ data: null, loading: true }" x-init="fetch('/data/installment_debt')
+               .then(response => response.json())
+               .then(result => data = result)
+               .catch(error => console.error('Erro ao buscar os dados:', error))
+               .finally(() => loading = false)">
+          <div x-show="loading" class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div x-show="!loading" x-text="data.detail">
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 {% endblock content %}
+
+
+{% block javascript %}
+<script>
+  $(document).ready(function () {
+    $('.js-example-basic-multiple').select2();
+  });
+</script>
+{% endblock javascript %}

@@ -17,4 +17,7 @@ def create_app():
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    from .data import data as data_blueprint
+    app.register_blueprint(data_blueprint)
+
     return app

@@ -18,3 +18,6 @@ class Invoice(me.Document):
     ref_date = me.DateField()
     debts = me.EmbeddedDocumentListField(Debt)
     file_raw_text = me.StringField()
+
+    def __str__(self):
+        return f'{self.bank_name} - {self.ref_date}'

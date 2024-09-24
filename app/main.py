@@ -14,30 +14,7 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def dashboard():
-    total_debt = 0
-    count_debt = 0
-    greater_debt = 0
-    installment_debt = 0
-    for invoice in Invoice.objects:
-        filtered_debts = [debt for debt in invoice.debts if debt.value > 0]
-        total_debt += sum([debt.value for debt in filtered_debts])
-        count_debt += len(filtered_debts)
-        greater_debt = max(
-            greater_debt, max([debt.value for debt in filtered_debts])
-        )
-        installment_debt += len([
-            debt.value
-            for debt in filtered_debts
-            if debt.total_installments > 1
-        ])
-
-    return render_template(
-        'dashboard.html',
-        total_debt=round(total_debt, 2),
-        count_debt=count_debt,
-        greater_debt=greater_debt,
-        installment_debt=installment_debt,
-    )
+    return render_template('dashboard.html', invoices=Invoice.objects)
 
 
 @main.route('/invoice/list')

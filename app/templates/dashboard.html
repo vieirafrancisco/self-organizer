@@ -122,6 +122,27 @@ Dashboard
       </div>
     </div>
   </div>
+
+  <div class="graphs row mt-4 gap-2">
+    <div class="card col">
+      <div class="card-body">
+        <div class="title">
+          <h4>ECharts Getting Started Example</h4>
+        </div>
+        <canvas id="myChart" width="600" height="400"></canvas>
+      </div>
+    </div>
+
+    <div class="card col">
+      <div class="card-body">
+        <div class="title">
+          <h4>ECharts Getting Started Example</h4>
+        </div>
+        <canvas id="myChart2" width="600" height="400"></canvas>
+      </div>
+    </div>
+  </div>
+
 </div>
 {% endblock content %}
 
@@ -131,5 +152,32 @@ Dashboard
   $(document).ready(function () {
     $('.js-example-basic-multiple').select2();
   });
+
+  // Initialize the echarts instance based on the prepared dom
+  var myChart = echarts.init(document.getElementById('myChart'));
+  var myChart2 = echarts.init(document.getElementById('myChart2'));
+
+  // Specify the configuration items and data for the chart
+  var option = {
+    tooltip: {},
+    legend: {
+      data: ['sales']
+    },
+    xAxis: {
+      data: ['Shirts', 'Cardigans', 'Chiffons', 'Pants', 'Heels', 'Socks']
+    },
+    yAxis: {},
+    series: [
+      {
+        name: 'sales',
+        type: 'bar',
+        data: [5, 20, 36, 10, 10, 20]
+      }
+    ]
+  };
+
+  // Display the chart using the configuration items and data just specified.
+  myChart.setOption(option);
+  myChart2.setOption(option);
 </script>
 {% endblock javascript %}

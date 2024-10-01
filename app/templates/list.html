@@ -7,11 +7,11 @@ Lista de Faturas
 {% block content %}
 <form action="{{ url_for('main.create_invoice') }}" method="post" enctype="multipart/form-data">
   <label for="bank_name">Nome do Banco</label>
-  <input type="text" name="bank_name" id="bank_name">
+  <input type="text" name="bank_name" id="bank_name" required="required">
   <label for="ref_date">Data referência</label>
-  <input type="date" name="ref_date" id="ref_date">
+  <input type="date" name="ref_date" id="ref_date" required="required">
   <label for="pdf">Fatura</label>
-  <input type="file" name="pdf" accept="application/pdf" id="pdf">
+  <input type="file" name="pdf" accept="application/pdf" id="pdf" required="required">
   <button type="submit" class="btn btn-primary">Upload</button>
 </form>
 

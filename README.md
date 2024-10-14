@@ -1,5 +1,5 @@
 # Self-Organizer
-Template for flask projects
+TODO: Description
 
 ## Install
 ```bash
@@ -8,3 +8,8 @@ nltk.download('punkt_tab')
 ```
 
 ## Usage
+
+## TODO
+- [ ] Replace nosql to sql
+- [ ] Add slalquemy
+- [ ] Sqlite local and postgres in production

@@ -35,7 +35,7 @@ Dashboard
   </div>
 
   <div class="row mt-4">
-    <div class="col d-flex flex-column gap-2 p-0">
+    <div class="col-md-12 d-flex flex-column gap-2 p-0">
       <label>Selecione a(s) fatura(s):</label>
       <select class="js-example-basic-multiple" name="states[]" multiple="multiple" aria-label="Invoice select">
         {% for invoice in invoices %}
@@ -123,11 +123,11 @@ Dashboard
     </div>
   </div>
 
-  <div class="graphs row mt-4 gap-2">
+  <div class="graphs row mt-4 gap-2 flex-wrap">
     <div class="card col">
       <div class="card-body">
         <div class="title">
-          <h4>ECharts Getting Started Example</h4>
+          <h6>ECharts Getting Started Example</h6>
         </div>
         <canvas id="myChart" width="600" height="400"></canvas>
       </div>
@@ -136,7 +136,7 @@ Dashboard
     <div class="card col">
       <div class="card-body">
         <div class="title">
-          <h4>ECharts Getting Started Example</h4>
+          <h6>ECharts Getting Started Example</h6>
         </div>
         <canvas id="myChart2" width="600" height="400"></canvas>
       </div>
@@ -161,10 +161,18 @@ Dashboard
   var option = {
     tooltip: {},
     legend: {
-      data: ['sales']
+      data: ['sales'],
+      textStyle: {
+        color: '#ffffff'
+      },
     },
     xAxis: {
-      data: ['Shirts', 'Cardigans', 'Chiffons', 'Pants', 'Heels', 'Socks']
+      data: ['Shirts', 'Cardigans', 'Chiffons', 'Pants', 'Heels', 'Socks'],
+      axisLabel: {
+        textStyle: {
+          color: '#ffffff'
+        }
+      }
     },
     yAxis: {},
     series: [

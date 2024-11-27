@@ -1,23 +1,40 @@
-import mongoengine as me
+import datetime
 
-from .settings import MONGODB_URI
-
-me.connect(host=MONGODB_URI)
-
-
-class Debt(me.EmbeddedDocument):
-    date = me.StringField()
-    description = me.StringField()
-    value = me.DecimalField()
-    paid_installment = me.IntField()
-    total_installments = me.IntField()
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy import ForeignKey, Date
 
 
-class Invoice(me.Document):
-    bank_name = me.StringField()
-    ref_date = me.DateField()
-    debts = me.EmbeddedDocumentListField(Debt)
-    file_raw_text = me.StringField()
+class Base(DeclarativeBase):
+    pass
 
-    def __str__(self):
+
+db = SQLAlchemy(model_class=Base)
+
+
+class Debt(db.Model):
+    __tablename__ = 'debt'
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    date: Mapped[datetime.date] = mapped_column(Date)
+    description: Mapped[str]
+    value: Mapped[float]
+    paid_installment: Mapped[int]
+    total_installments: Mapped[int]
+
+    invoice_id: Mapped[int] = mapped_column(ForeignKey('invoice.id'))
+    invoice: Mapped['Invoice'] = relationship(back_populates='debts')
+
+
+class Invoice(db.Model):
+    __tablename__ = 'invoice'
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    bank_name: Mapped[str]
+    ref_date: Mapped[datetime.date] = mapped_column(Date)
+    file_raw_text: Mapped[str]
+
+    debts: Mapped[list['Debt']] = relationship(back_populates='invoice')
+
+    def __repr__(self):
         return f'{self.bank_name} - {self.ref_date}'

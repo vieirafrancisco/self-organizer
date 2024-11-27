@@ -108,7 +108,26 @@ Dashboard
         <div class="title">
           <h6>Quantos Parcelamentos</h6>
         </div>
-        <div x-data="{ data: null, loading: true }" x-init="fetch('/data/installment_debt')
+        <div x-data="{ data: null, loading: true }" x-init="fetch('/data/count_installment_debts')
+               .then(response => response.json())
+               .then(result => data = result)
+               .catch(error => console.error('Erro ao buscar os dados:', error))
+               .finally(() => loading = false)">
+          <div x-show="loading" class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div x-show="!loading" x-text="data.detail">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card col">
+      <div class="card-body">
+        <div class="title">
+          <h6>Total Parcelamento</h6>
+        </div>
+        <div x-data="{ data: null, loading: true }" x-init="fetch('/data/sum_installment_debts')
                .then(response => response.json())
                .then(result => data = result)
                .catch(error => console.error('Erro ao buscar os dados:', error))

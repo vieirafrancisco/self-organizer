@@ -1,11 +1,10 @@
-from datetime import date
-
 import PyPDF2
 import google.generativeai as genai
 from nltk.tokenize import word_tokenize
+from sqlalchemy.exc import SQLAlchemyError
 
 from .settings import GOOGLE_API_KEY
-from .models import Debt, Invoice
+from .models import Debt, Invoice, db
 
 
 def extract_text_from_pdf(pdf_file):
@@ -33,6 +32,8 @@ def process_text_with_gemini(text):
         'and "y" to "total_installments". '
         'If the pattern is not present, set both "paid_installment" '
         'and "total_installments" to 1.'
+        'Date in format YYYY-MM-DD, if year not present then '
+        'current year.'
     )
     response = model.generate_content(prompt)
     return response
@@ -55,16 +56,33 @@ def serialize_text(text):
         }
 
 
-def save_invoice_to_db(
-    bank_name: str, ref_date: date, debts: list, file_raw_text: str
-) -> Invoice:
-    def build_debts():
-        for debt in debts:
-            yield Debt(**debt)
+def build_debts(invoice_id: int, debts: list[dict]):
+    """Gera instâncias do modelo Debt."""
+    for debt_args in debts:
+        yield Debt(invoice_id=invoice_id, **debt_args)
 
-    return Invoice(
+
+def save_invoice_with_debts(
+    bank_name: str, ref_date: str, file_raw_text: str, debts: list[dict]
+):
+    """Salva uma fatura (Invoice) e suas dívidas (Debts) no banco de dados."""
+    invoice = Invoice(
         bank_name=bank_name,
         ref_date=ref_date,
-        debts=list(build_debts()),
         file_raw_text=file_raw_text,
-    ).save()
+    )
+
+    try:
+        # Usando uma transação atômica
+        db.session.add(invoice)
+        db.session.flush()  # Obtém o `id` da fatura sem fazer `commit`
+
+        # Adiciona as dívidas relacionadas
+        db.session.add_all(build_debts(invoice.id, debts))
+
+        db.session.commit()
+
+        return invoice  # Retorna o objeto criado, se necessário
+    except SQLAlchemyError as e:
+        db.session.rollback()  # Reverte todas as operações em caso de erro
+        raise RuntimeError(f'Erro ao salvar fatura e dívidas: {e}')

@@ -5,11 +5,11 @@ Detail
 {% endblock title %}
 
 {% block content %}
-<div class="card">
+<div class="title">
+  <h4>Invoice #{{ invoice.id }}</h4>
+</div>
+<div class="card mb-4">
   <div class="card-body">
-    <div class="title">
-      <h4>{{ invoice.id }}</h4>
-    </div>
     <div class="table-responsive">
       <table class="table">
         <thead>
@@ -21,6 +21,36 @@ Detail
         </thead>
         <tbody>
           {% for debt in invoice.debts %}
+          <tr>
+            <td>{{ debt.date }}</td>
+            <td>{{ debt.description }}</td>
+            <td>{{ debt.value }}</td>
+            <td>{{ debt.paid_installment }}</td>
+            <td>{{ debt.total_installments }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<h4>Dívidas Parceladas</h4>
+<p>Total: {{ sum_installment_debts }}<br/>Saldo Devedor: {{ debit_balance_installment_debts }}</p>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <th>Data</th>
+          <th>Descrição</th>
+          <th>Valor</th>
+          <th>Parcela Paga</th>
+          <th>Parcelas</th>
+        </thead>
+        <tbody>
+          {% for debt in installment_debts %}
           <tr>
             <td>{{ debt.date }}</td>
             <td>{{ debt.description }}</td>

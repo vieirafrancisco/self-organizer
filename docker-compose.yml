@@ -1,24 +1,41 @@
 services:
-  app:
-    build: .
-    container_name: flask_app
+  # app:
+  #   build: .
+  #   container_name: flask_app
+  #   ports:
+  #     - "5000:5000"
+  #   volumes:
+  #     - .:/app
+  #   depends_on:
+  #     - postgres
+  postgres:
+    image: postgres:16
+    container_name: postgres_container
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: finorg
     ports:
-      - "5000:5000"
+      - "5432:5432"
     volumes:
-      - .:/app
+      - postgres_data:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4:7
+    container_name: pgadmin_container
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
     depends_on:
-      - mongo
-  mongo:
-    image: mongo:6.0
-    container_name: mongo_db
-    ports:
-      - "27017:27017"
+      - postgres
     volumes:
-      - ./mongo-data:/data/db
-    # environment:
-    #   MONGO_INITDB_ROOT_USERNAME: app
-    #   MONGO_INITDB_ROOT_PASSWORD: app
+      - pgadmin_data:/var/lib/pgadmin
 
 volumes:
-  mongo-data:
+  postgres_data:
+    driver: local
+  pgadmin_data:
     driver: local

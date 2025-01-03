@@ -64,3 +64,50 @@ def sum_installment_debts():
         ])
 
     return {'detail': _sum}
+
+
+@data.route('/data/top_10_most_expenses', methods=['GET'])
+def top_10_most_expenses():
+    debts = {}
+
+    def prep_text(text):
+        return text.split('-')[0].split('*')[0].strip()
+
+    for invoice in Invoice.query.all():
+        for debt in invoice.debts:
+            text = prep_text(debt.description)
+            if text not in debts.keys():
+                debts[text] = 0
+            debts[text] += debt.value
+
+    detail = []
+    for key, value in sorted(
+        debts.items(), key=lambda item: item[1], reverse=True
+    )[:10]:
+        detail.append({'name': key, 'value': value})
+
+    return {'detail': detail}
+
+
+@data.route('/data/top_10_most_expenses_installments', methods=['GET'])
+def top_10_most_expenses_installments():
+    debts = {}
+
+    def prep_text(text):
+        return text.split('-')[0].split('*')[0].strip()
+
+    for invoice in Invoice.query.all():
+        for debt in invoice.debts:
+            if debt.total_installments > 1:
+                text = prep_text(debt.description)
+                if text not in debts.keys():
+                    debts[text] = 0
+                debts[text] += debt.value
+
+    detail = []
+    for key, value in sorted(
+        debts.items(), key=lambda item: item[1], reverse=True
+    )[:10]:
+        detail.append({'name': key, 'value': value})
+
+    return {'detail': detail}

@@ -146,18 +146,18 @@ Dashboard
     <div class="card col">
       <div class="card-body">
         <div class="title">
-          <h6>ECharts Getting Started Example</h6>
+          <h6>Top 10 maiores gastos</h6>
         </div>
-        <canvas id="myChart" width="600" height="400"></canvas>
+        <div x-data="chartData" x-init="initChart('/data/top_10_most_expenses')" style="height: 400px; width: 100%;"></div>
       </div>
     </div>
 
     <div class="card col">
       <div class="card-body">
         <div class="title">
-          <h6>ECharts Getting Started Example</h6>
+          <h6>Top 10 maiores gastos - Parcelamentos</h6>
         </div>
-        <canvas id="myChart2" width="600" height="400"></canvas>
+        <div x-data="chartData" x-init="initChart('/data/top_10_most_expenses_installments')" style="height: 400px; width: 100%;"></div>
       </div>
     </div>
   </div>
@@ -165,46 +165,39 @@ Dashboard
 </div>
 {% endblock content %}
 
-
 {% block javascript %}
+<script>
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('chartData', () => ({
+      chartInstance: null,
+      options: {
+        tooltip: {
+          trigger: 'item'
+        },
+        series: [
+          {
+            name: 'sales',
+            type: 'pie',
+            data: [],
+          },
+        ]
+      },
+      initChart(endpoint) {
+        fetch(endpoint)
+          .then(response => response.json())
+          .then(response_json => {
+            console.log(response_json)
+            this.options.series[0].data = response_json.detail;
+            this.chartInstance = echarts.init(this.$el, 'dark');
+            this.chartInstance.setOption(this.options);
+          });
+      }
+    }));
+  });
+</script>
 <script>
   $(document).ready(function () {
     $('.js-example-basic-multiple').select2();
   });
-
-  // Initialize the echarts instance based on the prepared dom
-  var myChart = echarts.init(document.getElementById('myChart'));
-  var myChart2 = echarts.init(document.getElementById('myChart2'));
-
-  // Specify the configuration items and data for the chart
-  var option = {
-    tooltip: {},
-    legend: {
-      data: ['sales'],
-      textStyle: {
-        color: '#ffffff'
-      },
-    },
-    xAxis: {
-      data: ['Shirts', 'Cardigans', 'Chiffons', 'Pants', 'Heels', 'Socks'],
-      axisLabel: {
-        textStyle: {
-          color: '#ffffff'
-        }
-      }
-    },
-    yAxis: {},
-    series: [
-      {
-        name: 'sales',
-        type: 'bar',
-        data: [5, 20, 36, 10, 10, 20]
-      }
-    ]
-  };
-
-  // Display the chart using the configuration items and data just specified.
-  myChart.setOption(option);
-  myChart2.setOption(option);
 </script>
 {% endblock javascript %}
